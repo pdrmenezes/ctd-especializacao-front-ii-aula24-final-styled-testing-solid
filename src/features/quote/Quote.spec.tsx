@@ -13,10 +13,10 @@ describe("Quote Component", () => {
     });
   });
   describe("when the 'Apagar' button is clicked", () => {
-    it("renders the default state", () => {
+    it("renders the default state", async () => {
       render(<Quote />);
       const apagarButton = screen.getByText("Apagar");
-      userEvent.click(apagarButton);
+      await userEvent.click(apagarButton);
       expect(screen.getByText("Nenhuma citação encontrada")).toBeInTheDocument();
     });
   });
@@ -50,7 +50,7 @@ describe("Quote Component", () => {
       render(<Quote />);
       const getRandomQuoteButton = screen.getByText("Obter citação aleatória");
 
-      userEvent.click(getRandomQuoteButton);
+      await userEvent.click(getRandomQuoteButton);
 
       expect(await screen.findByText("Chief Wiggum")).toBeInTheDocument();
     });
@@ -59,7 +59,7 @@ describe("Quote Component", () => {
     it("the 'Obter citação' button is rendered", async () => {
       render(<Quote />);
       const nameInput = screen.getByPlaceholderText("Digite o nome do autor");
-      userEvent.type(nameInput, "homer");
+      await userEvent.type(nameInput, "homer");
 
       const getQuoteButton = await screen.findByText("Obter citação");
 
@@ -93,10 +93,10 @@ describe("Quote Component", () => {
       it("renders a quote from a random character that contains the typed string in its name", async () => {
         render(<Quote />);
         const nameInput = screen.getByPlaceholderText("Digite o nome do autor");
-        userEvent.type(nameInput, "homer");
+        await userEvent.type(nameInput, "homer");
 
         const getQuoteButton = await screen.findByText("Obter citação");
-        userEvent.click(getQuoteButton);
+        await userEvent.click(getQuoteButton);
 
         const quoteAuthorName = await screen.findByText("Homer Simpson");
 
@@ -108,10 +108,10 @@ describe("Quote Component", () => {
         it("renders the 'Por favor, indique um nome válido' warning message", async () => {
           render(<Quote />);
           const nameInput = screen.getByPlaceholderText("Digite o nome do autor");
-          userEvent.type(nameInput, "1");
+          await userEvent.type(nameInput, "1");
 
           const getQuoteButton = await screen.findByText("Obter citação");
-          userEvent.click(getQuoteButton);
+          await userEvent.click(getQuoteButton);
 
           const warningMessage = await screen.findByText("Por favor, indique um nome válido");
 
