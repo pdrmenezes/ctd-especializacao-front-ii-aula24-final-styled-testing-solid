@@ -31,13 +31,13 @@ describe("Bio Component", () => {
   describe("when another character's name button is clicked", () => {
     it("renders that characters active button", async () => {
       render(<Bio />);
-      const maggieButton = screen.getByText("MAGGIE");
+      const maggieButton = screen.getByRole("button", { name: "MAGGIE" });
       await userEvent.click(maggieButton);
       expect(maggieButton).toHaveStyle("background-color: #fdd835");
     });
     it("and that character's image", async () => {
       render(<Bio />);
-      const maggieButton = screen.getByText("MAGGIE");
+      const maggieButton = screen.getByRole("button", { name: "MAGGIE" });
       await userEvent.click(maggieButton);
 
       const activeCharacterImage = screen.getByAltText("Maggie Simpson");
@@ -53,7 +53,7 @@ describe("Bio Component", () => {
     });
     it("and that character's bio", async () => {
       render(<Bio />);
-      const activeCharacterButton = screen.getByText("MAGGIE");
+      const activeCharacterButton = screen.getByRole("button", { name: "MAGGIE" });
       await userEvent.click(activeCharacterButton);
 
       const activeCharacterBio = screen.getByText(
@@ -63,7 +63,7 @@ describe("Bio Component", () => {
     });
     it("removes the active button from previous character", async () => {
       render(<Bio />);
-      const activeCharacterButton = screen.getByText("MAGGIE");
+      const activeCharacterButton = screen.getByRole("button", { name: "MAGGIE" });
       await userEvent.click(activeCharacterButton);
 
       const prevActiveCharacterButton = screen.getByText("BART");
