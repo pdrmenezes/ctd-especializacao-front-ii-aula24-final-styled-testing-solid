@@ -1,17 +1,11 @@
-import {
-  BartImage,
-  HomerImage,
-  LisaImage,
-  MaggieImage,
-  MargeImage,
-} from "../../assets";
+import { BartImage, HomerImage, LisaImage, MaggieImage, MargeImage } from "../../assets";
 
 export enum NomesSimpsons {
   BART = "BART",
   LISA = "LISA",
   MAGGIE = "MAGGIE",
   MARGE = "MARGE",
-  HOMER = "HOMERO",
+  HOMER = "HOMER",
 }
 
 export const INFO_SIMPSONS = {
@@ -26,7 +20,7 @@ export const INFO_SIMPSONS = {
   },
   [NomesSimpsons.HOMER]: {
     id: NomesSimpsons.HOMER,
-    nome: "Homero Simpson",
+    nome: "Homer Simpson",
     description: `Como chefe da família,
      Homer e sua esposa Marge têm três filhos: Bart, Lisa e Maggie.
      Homer trabalha na Usina Nuclear de Springfield como inspetor de segurança.

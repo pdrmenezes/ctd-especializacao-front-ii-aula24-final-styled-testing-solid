@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { AssinarImage, CloseButton as Close } from "../../assets";
-import { obterNoticias } from "./fakeRest";
+import { INoticiasNormalizadas } from "./INoticiasNormalizadas";
+import { NoticiaContent } from "./NoticiaContent";
+import { obterInformacoes } from "./obterInformacoes";
 import {
   CloseButton,
   CardModal,
@@ -9,10 +11,6 @@ import {
   ImageModal,
   TituloModal,
   CardNoticia,
-  DateCardNoticia,
-  DescriptionCardNoticia,
-  ImageCardNoticia,
-  TituloCardNoticia,
   ContainerNoticias,
   ListaNoticias,
   TituloNoticias,
@@ -21,67 +19,26 @@ import {
   ContainerTexto,
 } from "./styled";
 
-export interface INoticiasNormalizadas {
-  id: number;
-  titulo: string;
-  description: string;
-  date: number | string;
-  premium: boolean;
-  image: string;
-  descriptionCurto?: string;
-}
-
 const Noticias = () => {
   const [noticias, setNoticias] = useState<INoticiasNormalizadas[]>([]);
   const [modal, setModal] = useState<INoticiasNormalizadas | null>(null);
 
   useEffect(() => {
-    const obterInformacoes = async () => {
-      const resposta = await obterNoticias();
-
-      const data = resposta.map((n) => {
-        const titulo = n.titulo
-          .split(" ")
-          .map((str) => {
-            return str.charAt(0).toUpperCase() + str.slice(1);
-          })
-          .join(" ");
-
-        const hora = new Date();
-        const minutosDecorrido = Math.floor(
-          (hora.getTime() - n.date.getTime()) / 60000
-        );
-
-        return {
-          id: n.id,
-          titulo,
-          description: n.description,
-          date: `Faz ${minutosDecorrido} minutos`,
-          premium: n.premium,
-          image: n.image,
-          descriptionCurto: n.description.substring(0, 100),
-        };
-      });
-
-      setNoticias(data);
-    };
-
-    obterInformacoes();
+    try {
+      obterInformacoes().then((noticias) => setNoticias(noticias));
+    } catch (error) {
+      throw new Error("Error fetching news" + error);
+    }
   }, []);
 
   return (
     <ContainerNoticias>
-      <TituloNoticias>Noticias dos Simpsons</TituloNoticias>
+      <TituloNoticias>Notícias dos Simpsons</TituloNoticias>
       <ListaNoticias>
-        {noticias.map((n) => (
-          <CardNoticia>
-            <ImageCardNoticia src={n.image} />
-            <TituloCardNoticia>{n.titulo}</TituloCardNoticia>
-            <DateCardNoticia>{n.date}</DateCardNoticia>
-            <DescriptionCardNoticia>
-              {n.descriptionCurto}
-            </DescriptionCardNoticia>
-            <BotaoLeitura onClick={() => setModal(n)}>Ver más</BotaoLeitura>
+        {noticias.map((noticia) => (
+          <CardNoticia key={noticia.id}>
+            <NoticiaContent noticia={noticia} />
+            <BotaoLeitura onClick={() => setModal(noticia)}>Ver mais</BotaoLeitura>
           </CardNoticia>
         ))}
         {modal ? (
@@ -94,14 +51,11 @@ const Noticias = () => {
                 <ImageModal src={AssinarImage} alt="mr-burns-excelent" />
                 <ContainerTexto>
                   <TituloModal>Assine a nossa newsletter</TituloModal>
-                  <DescriptionModal>
-                    Assine nossa newsletter e receba novidades de nossos
-                    personagens favoritos
-                  </DescriptionModal>
+                  <DescriptionModal>Assine nossa newsletter e receba novidades de nossos personagens favoritos</DescriptionModal>
                   <BotaoAssinar
                     onClick={() =>
                       setTimeout(() => {
-                        alert("Suscripto!");
+                        alert("Inscrito!");
                         setModal(null);
                       }, 1000)
                     }
